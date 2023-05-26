@@ -7,8 +7,8 @@ generator nexusPrisma {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("CLEARDB_DATABASE_URL")
 }
 
 model Product {
