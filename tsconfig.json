@@ -8,7 +8,3 @@
     },
     "include": ["src/**/*"]
 }
-
-// {
-//   "extends": "@tsconfig/node18/tsconfig.json"
-// }
