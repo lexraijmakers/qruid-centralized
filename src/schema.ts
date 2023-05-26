@@ -1,6 +1,6 @@
 import { DateTimeResolver } from 'graphql-scalars'
 import { arg, asNexusMethod, inputObjectType, makeSchema, nonNull, objectType } from 'nexus'
-import { User } from 'nexus-prisma'
+import { Product } from 'nexus-prisma'
 import { Context } from './context'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
@@ -8,10 +8,10 @@ export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 const Query = objectType({
     name: 'Query',
     definition(t) {
-        t.nonNull.list.nonNull.field('allUsers', {
-            type: User.$name,
+        t.nonNull.list.nonNull.field('allProducts', {
+            type: Product.$name,
             resolve: (_parent, _args, context: Context) => {
-                return context.prisma.user.findMany()
+                return context.prisma.product.findMany()
             }
         })
     }
@@ -20,20 +20,22 @@ const Query = objectType({
 const Mutation = objectType({
     name: 'Mutation',
     definition(t) {
-        t.nonNull.field('signupUser', {
-            type: User.$name,
+        t.nonNull.field('activateProduct', {
+            type: Product.$name,
             args: {
                 data: nonNull(
                     arg({
-                        type: 'UserCreateInput'
+                        type: `${Product.$name}CreateInput`
                     })
                 )
             },
             resolve: (_, args, context: Context) => {
-                return context.prisma.user.create({
+                return context.prisma.product.create({
                     data: {
-                        name: args.data.name,
-                        email: args.data.email
+                        qruid: args.data.qruid,
+                        has_deposit: args.data.deposit_amount > 0,
+                        brand_id: args.data.brand_id,
+                        deposit_amount: args.data.deposit_amount
                     }
                 })
             }
@@ -41,26 +43,34 @@ const Mutation = objectType({
     }
 })
 
-const UserObject = objectType({
-    name: User.$name,
-    description: User.$description,
+const ProductObject = objectType({
+    name: Product.$name,
+    description: Product.$description,
     definition(t) {
-        t.field(User.id)
-        t.field(User.name)
-        t.field(User.email)
+        t.field(Product.id)
+        t.field(Product.qruid)
+        t.field(Product.has_deposit)
+        t.field(Product.brand_id)
+        t.field(Product.date_of_activation)
+        t.field(Product.deposit_amount)
+        t.field(Product.customer_id)
+        t.field(Product.merchant_id)
+        t.field(Product.passport_definition)
+        t.field(Product.date_of_return)
     }
 })
 
-const UserCreateInput = inputObjectType({
-    name: 'UserCreateInput',
+const ProductCreateInput = inputObjectType({
+    name: `${Product.$name}CreateInput`,
     definition(t) {
-        t.field(User.name)
-        t.field(User.email)
+        t.field(Product.qruid)
+        t.field(Product.brand_id)
+        t.field(Product.deposit_amount)
     }
 })
 
 export const schema = makeSchema({
-    types: [Query, Mutation, UserObject, UserCreateInput, DateTime],
+    types: [Query, Mutation, ProductObject, ProductCreateInput, DateTime],
     outputs: {
         schema: __dirname + '/../schema.graphql',
         typegen: __dirname + '/generated/nexus.ts'
