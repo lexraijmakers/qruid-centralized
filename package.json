@@ -11,11 +11,12 @@
         "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
         "start": "node dist/server",
         "clean": "rm -rf dist",
-        "build": "npm -s run clean && npm -s run prisma:migrate && npm -s run generate && tsc",
+        "build": "npm -s run clean && npm -s run prisma:deploy && npm -s run generate && tsc",
         "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
         "generate:prisma": "prisma generate",
         "generate:nexus": "ts-node --transpile-only src/schema",
-        "prisma:migrate": "npx prisma migrate dev --name init"
+        "prisma:migrate": "npx prisma migrate dev --name init",
+        "prisma:deploy": "npx prisma migrate deploy"
     },
     "dependencies": {
         "@apollo/server": "^4.7.1",
