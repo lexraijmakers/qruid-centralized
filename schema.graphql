@@ -7,29 +7,99 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+type Deposit {
+  Product: [Product!]!
+  amount: Float!
+  gtin: String!
+  id: Int!
+}
+
+input DepositCreateInput {
+  amount: Float!
+  gtin: String!
+}
+
+type Interaction {
+  Product: Product!
+  date: DateTime!
+  description: String
+  id: Int!
+  productId: Int!
+  role: Role!
+  roleId: Int!
+  type: InteractionType!
+}
+
+enum InteractionType {
+  ACTIVATION
+  CLAIM
+  RECYCLE
+  RETURN
+  SALE
+  UPDATE
+}
+
 type Mutation {
-  activateProduct(data: ProductCreateInput!): Product!
+  createRole(data: RoleCreateInput!): Role!
+}
+
+type Passport {
+  Product: [Product!]!
+  brand: Role!
+  brandId: Int!
+  definition: String
+  id: Int!
+  name: String!
+  uid: String!
 }
 
 type Product {
-  brand_id: String!
-  customer_id: String
-  date_of_activation: DateTime!
-  date_of_return: DateTime
-  deposit_amount: Float!
-  has_deposit: Boolean!
+  deposit: Deposit!
+  depositId: Int!
   id: Int!
-  passport_definition: String
+  interactions: [Interaction!]!
+  passport: Passport!
+  passportId: Int!
   qruid: String!
-  retailer_id: String
-}
-
-input ProductCreateInput {
-  brand_id: String!
-  deposit_amount: Float!
-  qruid: String!
+  status: StatusType!
 }
 
 type Query {
-  allProducts: [Product!]!
+  allRoles: [Role!]!
+  getRoleByUid(uid: String): Role!
+}
+
+type Role {
+  Interaction: [Interaction!]!
+  Passport: [Passport!]!
+  description: String
+  id: Int!
+  name: String!
+  type: RoleType!
+  uid: String!
+}
+
+input RoleCreateInput {
+  description: String
+  name: String!
+  type: RoleType!
+  uid: String!
+}
+
+enum RoleType {
+  BRAND
+  CANDOUR
+  CUSTOMER
+  FOUNDATION
+  RECYCLER
+  RETAILER
+}
+
+enum StatusType {
+  ACTIVATED
+  RECYCLED
+  REPAIRED
+  RESOLD
+  RETURNED
+  SOLD
 }

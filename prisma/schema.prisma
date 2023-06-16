@@ -7,20 +7,82 @@ generator nexusPrisma {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("CLEARDB_AQUA_URL")
-  shadowDatabaseUrl = env("CLEARDB_PUCE_URL")
+  provider = "mysql"
+  url      = env("CLEARDB_AQUA_URL")
 }
 
 model Product {
-  id                  Int       @id @default(autoincrement())
-  qruid               String    @unique
-  passport_definition String?
-  has_deposit         Boolean
-  deposit_amount      Float
-  brand_id            String
-  date_of_activation  DateTime  @default(now())
-  retailer_id         String?
-  customer_id         String?
-  date_of_return      DateTime?
+  id           Int           @id @default(autoincrement())
+  qruid        String        @unique
+  passport     Passport      @relation(fields: [passportId], references: [id])
+  passportId   Int
+  status       StatusType    @default(ACTIVATED)
+  deposit      Deposit       @relation(fields: [depositId], references: [id])
+  depositId    Int
+  interactions Interaction[]
+}
+
+model Interaction {
+  id          Int             @id @default(autoincrement())
+  type        InteractionType
+  date        DateTime        @default(now())
+  description String?
+  role        Role            @relation(fields: [roleId], references: [id])
+  roleId      Int
+  Product     Product         @relation(fields: [productId], references: [id])
+  productId   Int
+}
+
+model Role {
+  id          Int           @id @default(autoincrement())
+  type        RoleType
+  uid         String        @unique
+  name        String
+  description String?
+  Interaction Interaction[]
+  Passport    Passport[]
+}
+
+model Deposit {
+  id      Int       @id @default(autoincrement())
+  gtin    String    @unique
+  amount  Float
+  Product Product[]
+}
+
+model Passport {
+  id         Int       @id @default(autoincrement())
+  uid        String    @unique
+  name       String
+  definition String?
+  brand      Role      @relation(fields: [brandId], references: [id])
+  brandId    Int
+  Product    Product[]
+}
+
+enum InteractionType {
+  ACTIVATION
+  UPDATE
+  SALE
+  CLAIM
+  RETURN
+  RECYCLE
+}
+
+enum RoleType {
+  CANDOUR
+  FOUNDATION
+  BRAND
+  RETAILER
+  RECYCLER
+  CUSTOMER
+}
+
+enum StatusType {
+  ACTIVATED
+  SOLD
+  RETURNED
+  REPAIRED
+  RESOLD
+  RECYCLED
 }
