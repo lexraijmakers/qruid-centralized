@@ -40,6 +40,7 @@ enum InteractionType {
 }
 
 type Mutation {
+  createDeposit(data: DepositCreateInput!): Deposit!
   createRole(data: RoleCreateInput!): Role!
 }
 
@@ -65,8 +66,9 @@ type Product {
 }
 
 type Query {
-  allRoles: [Role!]!
-  getRoleByUid(uid: String): Role!
+  deposits: [Deposit!]!
+  roleByUid(uid: String): Role!
+  roles: [Role!]!
 }
 
 type Role {
