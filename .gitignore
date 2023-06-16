@@ -4,4 +4,3 @@ src/generated/
 *.env*
 *.db
 *.db-journal
-prisma/migrations

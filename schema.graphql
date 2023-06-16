@@ -8,10 +8,8 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 scalar DateTime
 
 type Deposit {
-  Product: [Product!]!
   amount: Float!
   gtin: String!
-  id: Int!
 }
 
 input DepositCreateInput {
@@ -20,13 +18,16 @@ input DepositCreateInput {
 }
 
 type Interaction {
-  Product: Product!
   date: DateTime!
   description: String
-  id: Int!
-  productId: Int!
   role: Role!
-  roleId: Int!
+  type: InteractionType!
+}
+
+input InteractionCreateInput {
+  description: String
+  productQruid: String!
+  roleUid: String!
   type: InteractionType!
 }
 
@@ -41,41 +42,50 @@ enum InteractionType {
 
 type Mutation {
   createDeposit(data: DepositCreateInput!): Deposit!
+  createInteraction(data: InteractionCreateInput!): Interaction!
+  createPassport(data: PassportCreateInput!): Passport!
+  createProduct(data: ProductCreateInput!): Product!
   createRole(data: RoleCreateInput!): Role!
 }
 
 type Passport {
-  Product: [Product!]!
   brand: Role!
-  brandId: Int!
   definition: String
-  id: Int!
+  name: String!
+  uid: String!
+}
+
+input PassportCreateInput {
+  brandUid: String!
+  definition: String
   name: String!
   uid: String!
 }
 
 type Product {
   deposit: Deposit!
-  depositId: Int!
-  id: Int!
   interactions: [Interaction!]!
   passport: Passport!
-  passportId: Int!
   qruid: String!
   status: StatusType!
 }
 
+input ProductCreateInput {
+  depositGtin: String!
+  passportUid: String!
+  qruid: String!
+  roleUid: String!
+}
+
 type Query {
   deposits: [Deposit!]!
+  passports: [Passport!]!
   roleByUid(uid: String): Role!
   roles: [Role!]!
 }
 
 type Role {
-  Interaction: [Interaction!]!
-  Passport: [Passport!]!
   description: String
-  id: Int!
   name: String!
   type: RoleType!
   uid: String!

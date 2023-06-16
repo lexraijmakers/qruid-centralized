@@ -1,20 +1,11 @@
 import { DateTimeResolver } from 'graphql-scalars'
 import { asNexusMethod, enumType, makeSchema, objectType } from 'nexus'
 import { InteractionType, RoleType, StatusType } from 'nexus-prisma'
-import {
-    DepositCreateInput,
-    DepositObject,
-    InteractionObject,
-    PassportObject,
-    ProductObject,
-    RoleCreateInput,
-    RoleObject,
-    createDeposit,
-    createRole,
-    deposits,
-    roleByUid,
-    roles
-} from './models'
+import { DepositCreateInput, DepositObject, createDeposit, deposits } from './models/deposit'
+import { InteractionCreateInput, InteractionObject, createInteraction } from './models/interaction'
+import { PassportCreateInput, PassportObject, createPassport, passports } from './models/passport'
+import { ProductCreateInput, ProductObject, createProduct } from './models/product'
+import { RoleCreateInput, RoleObject, createRole, roleByUid, roles } from './models/role'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 
@@ -24,6 +15,7 @@ const Query = objectType({
         roles(t)
         roleByUid(t)
         deposits(t)
+        passports(t)
     }
 })
 
@@ -32,6 +24,9 @@ const Mutation = objectType({
     definition(t) {
         createRole(t)
         createDeposit(t)
+        createPassport(t)
+        createProduct(t)
+        createInteraction(t)
     }
 })
 
@@ -42,11 +37,14 @@ export const schema = makeSchema({
         DateTime,
         DepositObject,
         DepositCreateInput,
-        InteractionObject,
         PassportObject,
-        ProductObject,
+        PassportCreateInput,
         RoleObject,
         RoleCreateInput,
+        ProductObject,
+        ProductCreateInput,
+        InteractionObject,
+        InteractionCreateInput,
         enumType(RoleType),
         enumType(InteractionType),
         enumType(StatusType)

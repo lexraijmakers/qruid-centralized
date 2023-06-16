@@ -1,5 +1,0 @@
-export * from './deposit'
-export * from './interaction'
-export * from './passport'
-export * from './product'
-export * from './role'

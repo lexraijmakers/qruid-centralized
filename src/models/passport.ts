@@ -1,17 +1,16 @@
-import { inputObjectType, objectType } from 'nexus'
+import { arg, inputObjectType, nonNull, objectType } from 'nexus'
 import { Passport } from 'nexus-prisma'
+import { ObjectDefinitionBlock } from 'nexus/dist/core'
+import { Context } from '../context'
 
 export const PassportObject = objectType({
     name: Passport.$name,
     description: Passport.$description,
     definition(t) {
-        t.field(Passport.id)
         t.field(Passport.uid)
         t.field(Passport.name)
         t.field(Passport.definition)
         t.field(Passport.brand)
-        t.field(Passport.brandId)
-        t.field(Passport.Product)
     }
 })
 
@@ -21,7 +20,38 @@ export const PassportCreateInput = inputObjectType({
         t.field(Passport.uid)
         t.field(Passport.name)
         t.field(Passport.definition)
-        t.field(Passport.brand)
-        t.field(Passport.brandId)
+        t.nonNull.string('brandUid')
     }
 })
+
+export const createPassport = (t: ObjectDefinitionBlock<'Mutation'>) => {
+    t.nonNull.field('createPassport', {
+        type: Passport.$name,
+        args: {
+            data: nonNull(
+                arg({
+                    type: `${Passport.$name}CreateInput`
+                })
+            )
+        },
+        resolve: (_, args, context: Context) => {
+            return context.prisma.passport.create({
+                data: {
+                    uid: args.data.uid,
+                    name: args.data.name,
+                    definition: args.data.definition,
+                    brand: { connect: { uid: args.data.brandUid } }
+                }
+            })
+        }
+    })
+}
+
+export const passports = (t: ObjectDefinitionBlock<'Query'>) => {
+    t.nonNull.list.nonNull.field('passports', {
+        type: Passport.$name,
+        resolve: (_, __, context: Context) => {
+            return context.prisma.passport.findMany()
+        }
+    })
+}
