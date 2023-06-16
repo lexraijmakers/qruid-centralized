@@ -19,9 +19,9 @@ type Product {
   deposit_amount: Float!
   has_deposit: Boolean!
   id: Int!
-  merchant_id: String
   passport_definition: String
   qruid: String!
+  retailer_id: String
 }
 
 input ProductCreateInput {

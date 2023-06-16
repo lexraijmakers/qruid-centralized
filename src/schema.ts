@@ -54,7 +54,7 @@ const ProductObject = objectType({
         t.field(Product.date_of_activation)
         t.field(Product.deposit_amount)
         t.field(Product.customer_id)
-        t.field(Product.merchant_id)
+        t.field(Product.retailer_id)
         t.field(Product.passport_definition)
         t.field(Product.date_of_return)
     }
