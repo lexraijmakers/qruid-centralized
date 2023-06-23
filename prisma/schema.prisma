@@ -7,8 +7,9 @@ generator nexusPrisma {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("CLEARDB_AQUA_URL")
+  provider          = "mysql"
+  url               = env("CLEARDB_AQUA_URL")
+  shadowDatabaseUrl = env("CLEARDB_BRONZE_URL")
 }
 
 model Product {
