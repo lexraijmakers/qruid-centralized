@@ -54,7 +54,7 @@ model Passport {
   id         Int       @id @default(autoincrement())
   uid        String    @unique
   name       String
-  definition String?
+  definition String?   @db.VarChar(3000)
   brand      Role      @relation(fields: [brandId], references: [id])
   brandId    Int
   products   Product[]

@@ -49,7 +49,7 @@ CREATE TABLE `Passport` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `uid` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `definition` VARCHAR(191) NULL,
+    `definition` VARCHAR(3000) NULL,
     `brandId` INTEGER NOT NULL,
 
     UNIQUE INDEX `Passport_uid_key`(`uid`),

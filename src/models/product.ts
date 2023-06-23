@@ -1,4 +1,4 @@
-import { arg, inputObjectType, nonNull, objectType } from 'nexus'
+import { arg, inputObjectType, nonNull, objectType, stringArg } from 'nexus'
 import { InteractionType, Product } from 'nexus-prisma'
 import { ObjectDefinitionBlock } from 'nexus/dist/core'
 import { Context } from '../context'
@@ -51,6 +51,18 @@ export const createProduct = (t: ObjectDefinitionBlock<'Mutation'>) => {
                         }
                     }
                 }
+            })
+        }
+    })
+}
+
+export const productByQruid = (t: ObjectDefinitionBlock<'Query'>) => {
+    t.nonNull.field('productByQruid', {
+        type: Product.$name,
+        args: { qruid: stringArg() },
+        resolve: (_, args, context: Context) => {
+            return context.prisma.product.findUniqueOrThrow({
+                where: { qruid: args?.qruid || '' }
             })
         }
     })

@@ -80,6 +80,7 @@ input ProductCreateInput {
 type Query {
   deposits: [Deposit!]!
   passports: [Passport!]!
+  productByQruid(qruid: String): Product!
   roleByUid(uid: String): Role!
   roles: [Role!]!
 }

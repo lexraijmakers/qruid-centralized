@@ -4,7 +4,7 @@ import { InteractionType, RoleType, StatusType } from 'nexus-prisma'
 import { DepositCreateInput, DepositObject, createDeposit, deposits } from './models/deposit'
 import { InteractionCreateInput, InteractionObject, createInteraction } from './models/interaction'
 import { PassportCreateInput, PassportObject, createPassport, passports } from './models/passport'
-import { ProductCreateInput, ProductObject, createProduct } from './models/product'
+import { ProductCreateInput, ProductObject, createProduct, productByQruid } from './models/product'
 import { RoleCreateInput, RoleObject, createRole, roleByUid, roles } from './models/role'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
@@ -16,6 +16,7 @@ const Query = objectType({
         roleByUid(t)
         deposits(t)
         passports(t)
+        productByQruid(t)
     }
 })
 
