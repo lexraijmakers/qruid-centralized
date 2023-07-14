@@ -64,3 +64,15 @@ export const roleByUid = (t: ObjectDefinitionBlock<'Query'>) => {
         }
     })
 }
+
+export const deleteRole = (t: ObjectDefinitionBlock<'Mutation'>) => {
+    t.field('deleteRole', {
+        type: Role.$name,
+        args: { uid: nonNull(stringArg()) },
+        resolve: (_, args, context: Context) => {
+            return context.prisma.role.delete({
+                where: { uid: args.uid }
+            })
+        }
+    })
+}

@@ -67,3 +67,24 @@ export const productByQruid = (t: ObjectDefinitionBlock<'Query'>) => {
         }
     })
 }
+
+export const products = (t: ObjectDefinitionBlock<'Query'>) => {
+    t.nonNull.list.nonNull.field('products', {
+        type: Product.$name,
+        resolve: (_, __, context: Context) => {
+            return context.prisma.product.findMany()
+        }
+    })
+}
+
+export const deleteProduct = (t: ObjectDefinitionBlock<'Mutation'>) => {
+    t.field('deleteProduct', {
+        type: Product.$name,
+        args: { qruid: nonNull(stringArg()) },
+        resolve: (_, args, context: Context) => {
+            return context.prisma.product.delete({
+                where: { qruid: args.qruid }
+            })
+        }
+    })
+}

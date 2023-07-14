@@ -46,6 +46,10 @@ type Mutation {
   createPassport(data: PassportCreateInput!): Passport!
   createProduct(data: ProductCreateInput!): Product!
   createRole(data: RoleCreateInput!): Role!
+  deleteDeposit(gtin: String!): Deposit
+  deletePassport(uid: String!): Passport
+  deleteProduct(qruid: String!): Product
+  deleteRole(uid: String!): Role
 }
 
 type Passport {
@@ -81,6 +85,7 @@ type Query {
   deposits: [Deposit!]!
   passports: [Passport!]!
   productByQruid(qruid: String): Product!
+  products: [Product!]!
   roleByUid(uid: String): Role!
   roles: [Role!]!
 }

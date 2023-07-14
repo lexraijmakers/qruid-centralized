@@ -1,11 +1,37 @@
 import { DateTimeResolver } from 'graphql-scalars'
 import { asNexusMethod, enumType, makeSchema, objectType } from 'nexus'
 import { InteractionType, RoleType, StatusType } from 'nexus-prisma'
-import { DepositCreateInput, DepositObject, createDeposit, deposits } from './models/deposit'
+import {
+    DepositCreateInput,
+    DepositObject,
+    createDeposit,
+    deleteDeposit,
+    deposits
+} from './models/deposit'
 import { InteractionCreateInput, InteractionObject, createInteraction } from './models/interaction'
-import { PassportCreateInput, PassportObject, createPassport, passports } from './models/passport'
-import { ProductCreateInput, ProductObject, createProduct, productByQruid } from './models/product'
-import { RoleCreateInput, RoleObject, createRole, roleByUid, roles } from './models/role'
+import {
+    PassportCreateInput,
+    PassportObject,
+    createPassport,
+    deletePassport,
+    passports
+} from './models/passport'
+import {
+    ProductCreateInput,
+    ProductObject,
+    createProduct,
+    deleteProduct,
+    productByQruid,
+    products
+} from './models/product'
+import {
+    RoleCreateInput,
+    RoleObject,
+    createRole,
+    deleteRole,
+    roleByUid,
+    roles
+} from './models/role'
 
 export const DateTime = asNexusMethod(DateTimeResolver, 'date')
 
@@ -17,6 +43,7 @@ const Query = objectType({
         deposits(t)
         passports(t)
         productByQruid(t)
+        products(t)
     }
 })
 
@@ -28,6 +55,10 @@ const Mutation = objectType({
         createPassport(t)
         createProduct(t)
         createInteraction(t)
+        deleteDeposit(t)
+        deletePassport(t)
+        deleteProduct(t)
+        deleteRole(t)
     }
 })
 

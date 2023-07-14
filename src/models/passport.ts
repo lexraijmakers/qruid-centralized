@@ -1,4 +1,4 @@
-import { arg, inputObjectType, nonNull, objectType } from 'nexus'
+import { arg, inputObjectType, nonNull, objectType, stringArg } from 'nexus'
 import { Passport } from 'nexus-prisma'
 import { ObjectDefinitionBlock } from 'nexus/dist/core'
 import { Context } from '../context'
@@ -52,6 +52,18 @@ export const passports = (t: ObjectDefinitionBlock<'Query'>) => {
         type: Passport.$name,
         resolve: (_, __, context: Context) => {
             return context.prisma.passport.findMany()
+        }
+    })
+}
+
+export const deletePassport = (t: ObjectDefinitionBlock<'Mutation'>) => {
+    t.field('deletePassport', {
+        type: Passport.$name,
+        args: { uid: nonNull(stringArg()) },
+        resolve: (_, args, context: Context) => {
+            return context.prisma.passport.delete({
+                where: { uid: args.uid }
+            })
         }
     })
 }
