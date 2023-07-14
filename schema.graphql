@@ -20,7 +20,7 @@ input DepositCreateInput {
 type Interaction {
   date: DateTime!
   description: String
-  role: Role!
+  role: Role
   type: InteractionType!
 }
 
@@ -53,7 +53,7 @@ type Mutation {
 }
 
 type Passport {
-  brand: Role!
+  brand: Role
   definition: String
   name: String!
   uid: String!
@@ -67,9 +67,9 @@ input PassportCreateInput {
 }
 
 type Product {
-  deposit: Deposit!
+  deposit: Deposit
   interactions: [Interaction!]!
-  passport: Passport!
+  passport: Passport
   qruid: String!
   status: StatusType!
 }

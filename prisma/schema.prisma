@@ -15,11 +15,11 @@ datasource db {
 model Product {
   id           Int           @id @default(autoincrement())
   qruid        String        @unique
-  passport     Passport      @relation(fields: [passportId], references: [id])
-  passportId   Int
+  passport     Passport?     @relation(fields: [passportId], references: [id])
+  passportId   Int?
   status       StatusType    @default(ACTIVATED)
-  deposit      Deposit       @relation(fields: [depositId], references: [id])
-  depositId    Int
+  deposit      Deposit?      @relation(fields: [depositId], references: [id])
+  depositId    Int?
   interactions Interaction[]
 }
 
@@ -28,10 +28,10 @@ model Interaction {
   type        InteractionType
   date        DateTime        @default(now())
   description String?
-  role        Role            @relation(fields: [roleId], references: [id])
-  roleId      Int
-  product     Product         @relation(fields: [productId], references: [id])
-  productId   Int
+  role        Role?           @relation(fields: [roleId], references: [id])
+  roleId      Int?
+  product     Product?        @relation(fields: [productId], references: [id])
+  productId   Int?
 }
 
 model Role {
@@ -56,8 +56,8 @@ model Passport {
   uid        String    @unique
   name       String
   definition String?   @db.VarChar(3000)
-  brand      Role      @relation(fields: [brandId], references: [id])
-  brandId    Int
+  brand      Role?     @relation(fields: [brandId], references: [id])
+  brandId    Int?
   products   Product[]
 }
 
